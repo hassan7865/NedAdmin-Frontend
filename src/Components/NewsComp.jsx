@@ -31,7 +31,7 @@ const Right = styled.div`
  flex: 2;
 `
 const Head = styled.h1`
-margin-bottom: 20px;
+margin-bottom: 10px;
 color:#333;
 ${mobile({
     fontSize:"20px",
@@ -40,12 +40,15 @@ ${mobile({
 `
 const Desc = styled.p`
  letter-spacing: 1px;
+ margin-top: 10px;
  ${mobile({
     fontSize:"12px"
  })}
 `
-const Button = styled.button`
+const File = styled.a`
 
+`
+const Button = styled.button`
 width: 50%;
 height: 30px;
 color: white;
@@ -94,6 +97,7 @@ const NewsComp = ({item}) => {
         </Left>
         <Right>
             <Head>{item.title}</Head>
+            <File href={item.file} download>Download</File>
             <Desc>{item.desc}</Desc>
             <Lower><Button onClick={()=>DeleteNews(item._id)}>Delete</Button><Date>{moment(item.createdAt).fromNow()}</Date></Lower>
         </Right>

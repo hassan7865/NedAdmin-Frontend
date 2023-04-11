@@ -28,12 +28,10 @@ const Wrapper = styled.div`
 padding: 20px;
 
 flex-direction: column;
-height: 90%;
 background-color: #333;
 width: 50%;
 ${mobile({
   width: "80%",
-  height: "70%"
 })}
 `
 const Title = styled.input`
@@ -110,26 +108,43 @@ border: none;
 font-size: 15px;
 border-radius: 5px;
 color: white;
-opacity: ${props=>props.disabled ? "0.7" : "1"};
+opacity: ${props => props.disabled ? "0.7" : "1"};
+`
+const FileDoc = styled.span`
+display: flex;
+flex-direction: column;
+gap: 10px;
+color: white;
 `
 const InputImage = styled.input``
+const Upload = styled.div`
+display: flex;
+align-items: center;
+gap: 5px;
+`
+const Perc = styled.p`
+color: #41f041;
+`
 const FormAll = ({ open, setopen }) => {
   const [inputs, setinputs] = useState({})
-  const [load,setload] = useState(false)
+  const [load, setload] = useState(false)
   const [img, setimg] = useState()
+  const [doc,setdoc] = useState()
+  const [fileperc,setfileperc] = useState("")
+  console.log(inputs)
   const handleChange = (e) => {
     setinputs(prev => {
       return { ...prev, [e.target.name]: e.target.value }
     })
   }
   const isValid = () => {
-    if (inputs.title && inputs.link && inputs.desc && inputs.imgUrl) {
+    if (inputs.title && inputs.link && inputs.desc && inputs.imgUrl &&inputs.file) {
       return true
     } else {
       return false
     }
   }
-  const UploadFile = (file) => {
+  const UploadFile = (file, filetype) => {
     const fileName = new Date().getTime() + file?.name
     const storage = getStorage(app);
     const storageRef = ref(storage, `${fileName}`);
@@ -137,12 +152,12 @@ const FormAll = ({ open, setopen }) => {
     uploadTask.on('state_changed',
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(progress)
+        filetype === "file" && setfileperc(progress)
         switch (snapshot.state) {
           case 'paused':
             console.log('Upload is paused');
             break;
-          default:
+            default:
           case 'running':
             console.log('Upload is running');
             break;
@@ -153,24 +168,25 @@ const FormAll = ({ open, setopen }) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setinputs(prev=>{
-            return{...prev,"imgUrl":downloadURL}
+          setinputs(prev => {
+            return { ...prev, [filetype]: downloadURL }
           })
         });
       }
     )
   }
-  useEffect(() => { img && UploadFile(img) }, [img])
-  const SumbitForm = async(e)=>{
+  useEffect(() => { img && UploadFile(img, "imgUrl") }, [img])
+  useEffect(() => { doc && UploadFile(doc, "file") }, [doc])
+  const SumbitForm = async (e) => {
     e.preventDefault()
     setload(true)
-    await Req.post("/news/createnews",{...inputs})
-    .then((res)=>{
-      setload(false)
-      if(res.status === 200){
-        window.location.reload()
-      }
-    })
+    await Req.post("/news/createnews", { ...inputs })
+      .then((res) => {
+        setload(false)
+        if (res.status === 200) {
+          window.location.reload()
+        }
+      })
   }
   return (
     <>
@@ -184,10 +200,19 @@ const FormAll = ({ open, setopen }) => {
               <InputImage onChange={(e) => setimg(e.target.files[0])} id='file' style={{ display: "none" }} type="file"></InputImage>
               <Icon htmlFor='file'><AddAPhotoOutlinedIcon /></Icon>
             </PictureCont>
+            <FileDoc>
+              <label>File:</label>
+              <Upload>
+              <InputImage  onChange={(e)=>setdoc(e.target.files[0])} type="file"></InputImage>
+              <Perc>
+                {fileperc>0&&`${fileperc}%`}
+              </Perc>
+              </Upload>
+            </FileDoc>
             <Title name='title' onChange={handleChange} placeholder='Title'></Title>
             <NewsLink name='link' onChange={handleChange} placeholder='Link'></NewsLink>
             <Desc name='desc' onChange={handleChange} rows={5} placeholder='Description'></Desc>
-            <Button disabled={!isValid()} type='submit'>{load?<LoaderForm/>:<>POST</>}</Button>
+            <Button disabled={!isValid()} type='submit'>{load ? <LoaderForm /> : <>POST</>}</Button>
           </Form>
         </Wrapper>
       </Container>}
