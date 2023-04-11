@@ -51,7 +51,7 @@ const Test = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const test = useSelector((state)=>state.Test.test[0])
+  const test = useSelector((state)=>state.Test&&state.Test.test[0])
   useEffect(()=>{
     const gettest = async()=>{
       await Req.get("/test/gettest")
@@ -78,22 +78,22 @@ const Test = () => {
               </TabList>
             </Box>
             <TabPanel value="1">
-              {test.mock.map((item)=>(
+              {test && test.mock.map((item)=>(
                 <TestComp key={item._id} type="mock" item={item}/>
               ))}
             </TabPanel>
             <TabPanel value="2">
-            {test.chemistry.map((item)=>(
+            {test && test.chemistry.map((item)=>(
                 <TestComp  key={item._id} type="chemistry" item={item}/>
               ))}
             </TabPanel>
             <TabPanel value="3">
-            {test.physics.map((item)=>(
+            {test && test.physics.map((item)=>(
                 <TestComp  key={item._id} type="physics" item={item}/>
               ))}
             </TabPanel>
             <TabPanel value="4">
-            {test.math.map((item)=>(
+            {test && test.math.map((item)=>(
                 <TestComp  key={item._id} type="math" item={item}/>
               ))}
             </TabPanel>

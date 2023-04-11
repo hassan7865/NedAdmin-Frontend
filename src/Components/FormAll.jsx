@@ -131,7 +131,6 @@ const FormAll = ({ open, setopen }) => {
   const [img, setimg] = useState()
   const [doc,setdoc] = useState()
   const [fileperc,setfileperc] = useState("")
-  console.log(inputs)
   const handleChange = (e) => {
     setinputs(prev => {
       return { ...prev, [e.target.name]: e.target.value }

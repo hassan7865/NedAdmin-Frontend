@@ -75,7 +75,7 @@ const Pastpapers = () => {
          <Button onClick={()=>setopen(true)}><ArticleOutlinedIcon/>Add Papers</Button>
      </Section>
      <Container>
-      {past.map((items)=>(
+      {past && past.map((items)=>(
         <Past key={items._id} items={items}/>
         ))}
      </Container>

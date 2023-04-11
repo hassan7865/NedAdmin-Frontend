@@ -59,7 +59,7 @@ const News = () => {
         <Button onClick={()=>setopen(true)}><NewspaperIcon/>Add News</Button>
     </Section>
    <Container>
-    {news.map((item)=>(
+    {news && news.map((item)=>(
       <NewsComp key={item._id} item={item}/>
     ))}
     </Container>

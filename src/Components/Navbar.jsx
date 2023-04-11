@@ -69,7 +69,7 @@ const Navbar = () => {
           NED ADMISSION CELL ADMIN
         </Center></Link>
         <Right>
-        <Routes><LogoutIcon onClick={handleClick}/></Routes>
+        <Link to="/signin" style={{color:"inherit"}}><Routes><LogoutIcon onClick={handleClick}/></Routes></Link>
         </Right>
       </Wrapper>
     </Container>

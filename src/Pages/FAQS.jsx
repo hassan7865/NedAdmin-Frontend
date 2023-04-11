@@ -61,7 +61,7 @@ const FAQS = () => {
          <Button onClick={()=>setopen(true)}><QuestionMarkIcon/>Add FAQ'S</Button>
      </Section>
    <Container>
-    {faq.map((items)=>(
+    {faq && faq.map((items)=>(
     <FAQComp key={items._id} items={items}/>
     ))}
    </Container>
