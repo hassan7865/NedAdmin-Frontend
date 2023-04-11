@@ -138,7 +138,7 @@ const FormAll = ({ open, setopen }) => {
     })
   }
   const isValid = () => {
-    if (inputs.title && inputs.link && inputs.desc && inputs.imgUrl &&inputs.file) {
+    if (inputs.title && inputs.desc && inputs.imgUrl) {
       return true
     } else {
       return false

@@ -97,7 +97,7 @@ const NewsComp = ({item}) => {
         </Left>
         <Right>
             <Head>{item.title}</Head>
-            <File href={item.file} download>Download</File>
+            {item.file ?<File href={item.file} download>Download</File>:<>No File</>}
             <Desc>{item.desc}</Desc>
             <Lower><Button onClick={()=>DeleteNews(item._id)}>Delete</Button><Date>{moment(item.createdAt).fromNow()}</Date></Lower>
         </Right>
